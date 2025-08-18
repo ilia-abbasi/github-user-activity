@@ -1,4 +1,6 @@
 const { getUserData, getDataSummary } = require("./request.js");
+const { printData } = require("./report.js");
+const config = require("./config.js");
 
 async function main() {
   const username = process.argv[2];
@@ -6,7 +8,8 @@ async function main() {
   try {
     const dataObj = await getUserData(username);
     const dataSummary = getDataSummary(dataObj, username);
-    console.log(Object.entries(dataSummary));
+    config.verboseMode = true;
+    printData(dataSummary);
   } catch (err) {
     console.log(`An error occurred while trying to get user data:\n${err}`);
     process.exit(1);

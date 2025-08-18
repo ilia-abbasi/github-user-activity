@@ -1,5 +1,7 @@
+const config = require("./config.js");
+
 function printData(dataObj) {
-  printCommits(dataObj.commits);
+  printCommits(dataObj.commits, config.verboseMode);
 }
 
 function printCommits(commits, verbose = false) {
@@ -19,5 +21,10 @@ function printCommits(commits, verbose = false) {
     for (const commit of commitGroup) {
       console.log(`  |_ ${commit.hash.slice(0, 7)}: ${commit.message}`);
     }
+    console.log();
   }
 }
+
+module.exports = {
+  printData,
+};

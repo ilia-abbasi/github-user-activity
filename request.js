@@ -85,7 +85,7 @@ function extractCommits(event, container) {
   for (const commit of event.payload.commits) {
     commitArray.push({
       repo: event.repo.name,
-      message: commit.message,
+      message: commit.message.split("\n")[0],
       hash: commit.sha,
     });
     config.emails.add(commit.author.email);
