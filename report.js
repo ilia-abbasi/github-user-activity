@@ -3,6 +3,7 @@ const config = require("./config.js");
 function printData(dataObj) {
   printCommits(dataObj.commits, config.verboseMode);
   printBranchCreations(dataObj.branchCreations, config.verboseMode);
+  printRepoCreations(dataObj.repoCreations, config.verboseMode);
 }
 
 function printCommits(commits, verbose = false) {
@@ -45,6 +46,22 @@ function printBranchCreations(branchCreations, verbose = false) {
     console.log(
       `|- Created ${branchCreation.branch} branch in ${branchCreation.repo}`
     );
+  }
+
+  console.log();
+}
+
+function printRepoCreations(repoCreations, verbose = false) {
+  if (!repoCreations.length) {
+    return;
+  }
+
+  console.log("==================");
+  console.log("| Repo Creations |");
+  console.log("==================");
+
+  for (const repoCreation of repoCreations) {
+    console.log(`|- Created ${repoCreation.repo} repository`);
   }
 
   console.log();
