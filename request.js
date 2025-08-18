@@ -30,8 +30,9 @@ function getDataSummary(dataObj, username) {
     branchCreations: [],
     repoCreations: [],
     branchDeletions: [],
-    pullRequests: [],
-    Issues: [], // will include opening and closing the issue
+    pullRequests: [], // will include opening and closing the PR
+    issues: [], // will include opening and closing the issue
+    publicEvents: [], // making a repo public
   };
 
   for (const event of dataObj) {
@@ -68,6 +69,10 @@ function getDataSummary(dataObj, username) {
 
     if (event.type === "PullRequestEvent") {
       extractPullRequests(event, result);
+    }
+
+    if (event.type === "PublicEvent") {
+      extractPublicEvents(event, result);
     }
   }
 
@@ -106,7 +111,7 @@ function extractBranchDeletions(event, container) {
 }
 
 function extractIssues(event, container) {
-  container.Issues.push({
+  container.issues.push({
     repo: event.repo.name,
     action: event.payload.action,
     url: event.payload.issue.html_url,
@@ -118,6 +123,12 @@ function extractPullRequests(event, container) {
     repo: event.repo.name,
     action: event.payload.action,
     url: event.payload.pull_request.html_url,
+  });
+}
+
+function extractPublicEvents(event, container) {
+  container.publicEvents.push({
+    repo: event.repo.name,
   });
 }
 
