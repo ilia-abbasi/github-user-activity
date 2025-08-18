@@ -37,6 +37,14 @@ function getDataSummary(dataObj) {
     if (event.type === "PushEvent") {
       extractCommits(event, result);
     }
+    if (event.type === "CreateEvent") {
+      if (event.payload.ref_type === "branch") {
+        extractBranchCreations(event, result);
+      }
+      if (event.payload.ref_type === "repository") {
+        extractRepoCreations(event, result);
+      }
+    }
   }
 
   return result;
@@ -44,13 +52,26 @@ function getDataSummary(dataObj) {
 
 function extractCommits(event, container) {
   for (const commit of event.payload.commits) {
-    container["commits"].push({
+    container.commits.push({
       repo: event.repo.name,
       message: commit.message,
       hash: commit.sha,
     });
     config.emails.add(commit.author.email);
   }
+}
+
+function extractBranchCreations(event, container) {
+  container.branchCreations.push({
+    repo: event.repo.name,
+    branch: event.payload.ref,
+  });
+}
+
+function extractRepoCreations(event, container) {
+  container.repoCreations.push({
+    repo: event.repo.name,
+  });
 }
 
 module.exports = {
