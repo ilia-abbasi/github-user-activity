@@ -6,6 +6,7 @@ async function main() {
   try {
     const dataObj = await getUserData(username);
     const dataSummary = getDataSummary(dataObj);
+    console.log(Object.entries(dataSummary));
   } catch (err) {
     console.log(`An error occurred while trying to get user data:\n${err}`);
     process.exit(1);

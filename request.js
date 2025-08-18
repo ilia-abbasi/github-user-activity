@@ -29,14 +29,16 @@ function getDataSummary(dataObj) {
     commits: [],
     branchCreations: [],
     repoCreations: [],
+    branchDeletions: [],
     pullRequests: [],
-    Issues: [],
+    Issues: [], // will include opening and closing the issue
   };
 
   for (const event of dataObj) {
     if (event.type === "PushEvent") {
       extractCommits(event, result);
     }
+
     if (event.type === "CreateEvent") {
       if (event.payload.ref_type === "branch") {
         extractBranchCreations(event, result);
@@ -44,6 +46,16 @@ function getDataSummary(dataObj) {
       if (event.payload.ref_type === "repository") {
         extractRepoCreations(event, result);
       }
+    }
+
+    if (event.type === "DeleteEvent") {
+      if (event.payload.ref_type === "branch") {
+        extractBranchDeletions(event, result);
+      }
+    }
+
+    if (event.type === "IssuesEvent") {
+      extractIssues(event, result);
     }
   }
 
@@ -71,6 +83,21 @@ function extractBranchCreations(event, container) {
 function extractRepoCreations(event, container) {
   container.repoCreations.push({
     repo: event.repo.name,
+  });
+}
+
+function extractBranchDeletions(event, container) {
+  container.branchDeletions.push({
+    repo: event.repo.name,
+    branch: event.payload.ref,
+  });
+}
+
+function extractIssues(event, container) {
+  container.Issues.push({
+    repo: event.repo.name,
+    action: event.payload.action,
+    url: event.payload.issue.html_url,
   });
 }
 
