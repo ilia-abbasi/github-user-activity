@@ -2,8 +2,9 @@ const config = require("./config.js");
 
 function printData(dataObj) {
   printCommits(dataObj.commits, config.verboseMode);
-  printBranchCreations(dataObj.branchCreations, config.verboseMode);
-  printRepoCreations(dataObj.repoCreations, config.verboseMode);
+  printBranchCreations(dataObj.branchCreations);
+  printRepoCreations(dataObj.repoCreations);
+  printBranchDeletions(dataObj.branchDeletions);
 }
 
 function printCommits(commits, verbose = false) {
@@ -33,7 +34,7 @@ function printCommits(commits, verbose = false) {
   console.log();
 }
 
-function printBranchCreations(branchCreations, verbose = false) {
+function printBranchCreations(branchCreations) {
   if (!branchCreations.length) {
     return;
   }
@@ -51,7 +52,7 @@ function printBranchCreations(branchCreations, verbose = false) {
   console.log();
 }
 
-function printRepoCreations(repoCreations, verbose = false) {
+function printRepoCreations(repoCreations) {
   if (!repoCreations.length) {
     return;
   }
@@ -62,6 +63,24 @@ function printRepoCreations(repoCreations, verbose = false) {
 
   for (const repoCreation of repoCreations) {
     console.log(`|- Created ${repoCreation.repo} repository`);
+  }
+
+  console.log();
+}
+
+function printBranchDeletions(branchDeletions) {
+  if (!branchDeletions.length) {
+    return;
+  }
+
+  console.log("====================");
+  console.log("| Branch Deletions |");
+  console.log("====================");
+
+  for (const branchDeletion of branchDeletions) {
+    console.log(
+      `|- Deleted ${branchDeletion.branch} branch in ${branchDeletion.repo}`
+    );
   }
 
   console.log();
