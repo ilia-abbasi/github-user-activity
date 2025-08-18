@@ -1,6 +1,7 @@
 const config = require("./config.js");
 
 function printData(dataObj) {
+  printPersonalInfo();
   printCommits(dataObj.commits, config.verboseMode);
   printBranchCreations(dataObj.branchCreations);
   printRepoCreations(dataObj.repoCreations);
@@ -8,6 +9,22 @@ function printData(dataObj) {
   printPullRequests(dataObj.pullRequests, config.verboseMode);
   printIssues(dataObj.issues, config.verboseMode);
   printPublicEvents(dataObj.publicEvents);
+}
+
+function printPersonalInfo() {
+  console.log("============");
+  console.log("| PERSONAL |");
+  console.log("============");
+  console.log();
+  console.log(`ID: ${config.id}`);
+  console.log();
+  console.log("Email(s):");
+
+  for (const email of config.emails) {
+    console.log(`- ${email}`);
+  }
+
+  console.log();
 }
 
 function printCommits(commits, verbose = false) {
@@ -20,8 +37,9 @@ function printCommits(commits, verbose = false) {
   console.log("===========");
 
   for (const commitGroup of commits) {
+    const count = commitGroup.length;
     console.log(
-      `|- Pushed ${commitGroup.length} commits to ${commitGroup[0].repo}`
+      `|- Pushed ${count} ${plural("commit", count)} to ${commitGroup[0].repo}`
     );
 
     if (!verbose) {
@@ -157,6 +175,14 @@ function capitalizeFirstLetter(str) {
     return str;
   }
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function plural(str, count = 2) {
+  if (count === 1) {
+    return str;
+  }
+
+  return `${str}s`;
 }
 
 module.exports = {
