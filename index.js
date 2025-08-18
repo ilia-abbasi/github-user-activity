@@ -1,19 +1,51 @@
 const { getUserData, getDataSummary } = require("./request.js");
 const { printData } = require("./report.js");
 const config = require("./config.js");
+const argv = process.argv;
 
 async function main() {
-  const username = process.argv[2];
+  argv.splice(0, 2);
 
-  try {
-    const dataObj = await getUserData(username);
-    const dataSummary = getDataSummary(dataObj, username);
-    config.verboseMode = true;
-    printData(dataSummary);
-  } catch (err) {
-    console.log(`An error occurred while trying to get user data:\n${err}`);
+  handleArgv();
+
+  const username = argv[0];
+  const dataObj = await getUserData(username);
+  const dataSummary = getDataSummary(dataObj, username);
+  
+  printData(dataSummary);
+}
+
+function handleArgv() {
+  if (argv.length === 0) {
+    console.log("No arguments were given. Exitting with code 1.");
     process.exit(1);
   }
+
+  if (argv.includes("h") || argv.includes("help")) {
+    showHelp();
+    process.exit(0);
+  }
+
+  if (argv.includes("v")) {
+    config.verboseMode = true;
+    argv.splice(argv.indexOf("v"), 1);
+  }
+  if (argv.includes("verbose")) {
+    config.verboseMode = true;
+    argv.splice(argv.indexOf("verbose"), 1);
+  }
+}
+
+function showHelp() {
+  console.log(`
+Usage: npm run start [username] [options]
+
+Options:
+    h  OR  help           Shows this section. Explains different options.
+    v  OR  verbose        Logs more messages to the console, including the
+                          hash and message of each commit and some URLs.
+    s  OR  save           Report will be saved after the execution of program.
+    `);
 }
 
 try {

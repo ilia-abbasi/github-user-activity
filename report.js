@@ -13,7 +13,7 @@ function printData(dataObj) {
 
 function printPersonalInfo() {
   console.log("============");
-  console.log("| PERSONAL |");
+  console.log("| Personal |");
   console.log("============");
   console.log();
   console.log(`ID: ${config.id}`);

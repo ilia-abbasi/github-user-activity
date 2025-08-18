@@ -2,7 +2,8 @@ const config = require("./config.js");
 
 async function getUserData(username) {
   if (username === undefined || username === "") {
-    throw new Error("No username was provided");
+    console.log("No username was provided");
+    process.exit(1);
   }
 
   const url = `https://api.github.com/users/${username}/events`;
