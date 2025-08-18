@@ -114,19 +114,19 @@ function extractBranchDeletions(event, container) {
   });
 }
 
-function extractIssues(event, container) {
-  container.issues.push({
-    repo: event.repo.name,
-    action: event.payload.action,
-    url: event.payload.issue.html_url,
-  });
-}
-
 function extractPullRequests(event, container) {
   container.pullRequests.push({
     repo: event.repo.name,
     action: event.payload.action,
     url: event.payload.pull_request.html_url,
+  });
+}
+
+function extractIssues(event, container) {
+  container.issues.push({
+    repo: event.repo.name,
+    action: event.payload.action,
+    url: event.payload.issue.html_url,
   });
 }
 

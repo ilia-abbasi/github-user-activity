@@ -5,6 +5,7 @@ function printData(dataObj) {
   printBranchCreations(dataObj.branchCreations);
   printRepoCreations(dataObj.repoCreations);
   printBranchDeletions(dataObj.branchDeletions);
+  printPullRequests(dataObj.pullRequests, config.verboseMode);
 }
 
 function printCommits(commits, verbose = false) {
@@ -84,6 +85,36 @@ function printBranchDeletions(branchDeletions) {
   }
 
   console.log();
+}
+
+function printPullRequests(pullRequests, verbose = false) {
+  if (!pullRequests.length) {
+    return;
+  }
+
+  console.log("=================");
+  console.log("| Pull Requests |");
+  console.log("=================");
+
+  for (const pullRequest of pullRequests) {
+    const verb = capitalizeFirstLetter(pullRequest.action);
+    console.log(`|- ${verb} a pull request at ${pullRequest.repo}`);
+
+    if (!verbose) {
+      continue;
+    }
+
+    console.log(`|  |_ URL: ${pullRequest.url}`);
+  }
+
+  console.log();
+}
+
+function capitalizeFirstLetter(str) {
+  if (typeof str !== "string" || str.length === 0) {
+    return str;
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 module.exports = {
