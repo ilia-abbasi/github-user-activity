@@ -1,5 +1,5 @@
 const { getUserData, getDataSummary } = require("./request.js");
-const { printData } = require("./report.js");
+const { printData, saveLog } = require("./report.js");
 const config = require("./config.js");
 const argv = process.argv;
 
@@ -11,8 +11,10 @@ async function main() {
   const username = argv[0];
   const dataObj = await getUserData(username);
   const dataSummary = getDataSummary(dataObj, username);
-  
+
   printData(dataSummary);
+
+  saveLog();
 }
 
 function handleArgv() {
@@ -33,6 +35,15 @@ function handleArgv() {
   if (argv.includes("verbose")) {
     config.verboseMode = true;
     argv.splice(argv.indexOf("verbose"), 1);
+  }
+
+  if (argv.includes("s")) {
+    config.saveLogMode = true;
+    argv.splice(argv.indexOf("s"), 1);
+  }
+  if (argv.includes("save")) {
+    config.saveLogMode = true;
+    argv.splice(argv.indexOf("save"), 1);
   }
 }
 

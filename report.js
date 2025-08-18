@@ -1,4 +1,9 @@
 const config = require("./config.js");
+const fs = require("fs");
+
+const folderName = "logs";
+let filePath = folderName + "/log";
+let logString = "";
 
 function printData(dataObj) {
   printPersonalInfo();
@@ -12,19 +17,19 @@ function printData(dataObj) {
 }
 
 function printPersonalInfo() {
-  console.log("============");
-  console.log("| Personal |");
-  console.log("============");
-  console.log();
-  console.log(`ID: ${config.id}`);
-  console.log();
-  console.log("Email(s):");
+  log("============");
+  log("| Personal |");
+  log("============");
+  log();
+  log(`ID: ${config.id}`);
+  log();
+  log("Email(s):");
 
   for (const email of config.emails) {
-    console.log(`- ${email}`);
+    log(`- ${email}`);
   }
 
-  console.log();
+  log();
 }
 
 function printCommits(commits, verbose = false) {
@@ -32,13 +37,13 @@ function printCommits(commits, verbose = false) {
     return;
   }
 
-  console.log("===========");
-  console.log("| Commits |");
-  console.log("===========");
+  log("===========");
+  log("| Commits |");
+  log("===========");
 
   for (const commitGroup of commits) {
     const count = commitGroup.length;
-    console.log(
+    log(
       `|- Pushed ${count} ${plural("commit", count)} to ${commitGroup[0].repo}`
     );
 
@@ -47,12 +52,12 @@ function printCommits(commits, verbose = false) {
     }
 
     for (const commit of commitGroup) {
-      console.log(`|  |_ ${commit.hash.slice(0, 7)}: ${commit.message}`);
+      log(`|  |_ ${commit.hash.slice(0, 7)}: ${commit.message}`);
     }
-    console.log("|");
+    log("|");
   }
 
-  console.log();
+  log();
 }
 
 function printBranchCreations(branchCreations) {
@@ -60,17 +65,15 @@ function printBranchCreations(branchCreations) {
     return;
   }
 
-  console.log("====================");
-  console.log("| Branch Creations |");
-  console.log("====================");
+  log("====================");
+  log("| Branch Creations |");
+  log("====================");
 
   for (const branchCreation of branchCreations) {
-    console.log(
-      `|- Created ${branchCreation.branch} branch in ${branchCreation.repo}`
-    );
+    log(`|- Created ${branchCreation.branch} branch in ${branchCreation.repo}`);
   }
 
-  console.log();
+  log();
 }
 
 function printRepoCreations(repoCreations) {
@@ -78,15 +81,15 @@ function printRepoCreations(repoCreations) {
     return;
   }
 
-  console.log("==================");
-  console.log("| Repo Creations |");
-  console.log("==================");
+  log("==================");
+  log("| Repo Creations |");
+  log("==================");
 
   for (const repoCreation of repoCreations) {
-    console.log(`|- Created ${repoCreation.repo} repository`);
+    log(`|- Created ${repoCreation.repo} repository`);
   }
 
-  console.log();
+  log();
 }
 
 function printBranchDeletions(branchDeletions) {
@@ -94,17 +97,15 @@ function printBranchDeletions(branchDeletions) {
     return;
   }
 
-  console.log("====================");
-  console.log("| Branch Deletions |");
-  console.log("====================");
+  log("====================");
+  log("| Branch Deletions |");
+  log("====================");
 
   for (const branchDeletion of branchDeletions) {
-    console.log(
-      `|- Deleted ${branchDeletion.branch} branch in ${branchDeletion.repo}`
-    );
+    log(`|- Deleted ${branchDeletion.branch} branch in ${branchDeletion.repo}`);
   }
 
-  console.log();
+  log();
 }
 
 function printPullRequests(pullRequests, verbose = false) {
@@ -112,23 +113,23 @@ function printPullRequests(pullRequests, verbose = false) {
     return;
   }
 
-  console.log("=================");
-  console.log("| Pull Requests |");
-  console.log("=================");
+  log("=================");
+  log("| Pull Requests |");
+  log("=================");
 
   for (const pullRequest of pullRequests) {
     const verb = capitalizeFirstLetter(pullRequest.action);
-    console.log(`|- ${verb} a pull request in ${pullRequest.repo}`);
+    log(`|- ${verb} a pull request in ${pullRequest.repo}`);
 
     if (!verbose) {
       continue;
     }
 
-    console.log(`|  |_ URL: ${pullRequest.url}`);
-    console.log("|");
+    log(`|  |_ URL: ${pullRequest.url}`);
+    log("|");
   }
 
-  console.log();
+  log();
 }
 
 function printIssues(issues, verbose = false) {
@@ -136,22 +137,22 @@ function printIssues(issues, verbose = false) {
     return;
   }
 
-  console.log("==========");
-  console.log("| Issues |");
-  console.log("==========");
+  log("==========");
+  log("| Issues |");
+  log("==========");
 
   for (const issue of issues) {
     const verb = capitalizeFirstLetter(issue.action);
-    console.log(`|- ${verb} an issue in ${issue.repo}`);
+    log(`|- ${verb} an issue in ${issue.repo}`);
 
     if (!verbose) {
       continue;
     }
 
-    console.log(`|  |_ URL: ${issue.url}`);
+    log(`|  |_ URL: ${issue.url}`);
   }
 
-  console.log();
+  log();
 }
 
 function printPublicEvents(publicEvents) {
@@ -159,15 +160,54 @@ function printPublicEvents(publicEvents) {
     return;
   }
 
-  console.log("=================");
-  console.log("| Public Events |");
-  console.log("=================");
+  log("=================");
+  log("| Public Events |");
+  log("=================");
 
   for (const publicEvent of publicEvents) {
-    console.log(`|- Made ${publicEvent.repo} repository public`);
+    log(`|- Made ${publicEvent.repo} repository public`);
   }
 
-  console.log();
+  log();
+}
+
+function log(str = "") {
+  logString = `${logString}${str}\n`;
+  console.log(str);
+}
+
+function saveLog(isForced = false) {
+  if (!config.saveLogMode && !isForced) {
+    return;
+  }
+
+  // Making logs folder if it does not exist
+  try {
+    if (!fs.existsSync(folderName)) {
+      fs.mkdirSync(folderName);
+    }
+  } catch (err) {
+    console.log(
+      `An error occurred while trying to make the ${folderName} folder:`
+    );
+    console.log(err);
+  }
+
+  // Finding an unused name for the log file
+  let i = 0;
+  while (fs.existsSync(`${filePath}${i}.txt`)) {
+    i++;
+  }
+  filePath = `${filePath}${i}.txt`;
+
+  // Saving logString to file
+  try {
+    fs.writeFileSync(filePath, logString);
+    console.log(`Log was saved in ${filePath}`);
+  } catch (err) {
+    console.log(`An error occurred while trying to save log in ${filePath}:`);
+    console.log(err);
+  }
 }
 
 function capitalizeFirstLetter(str) {
@@ -187,4 +227,5 @@ function plural(str, count = 2) {
 
 module.exports = {
   printData,
+  saveLog,
 };
