@@ -7,6 +7,7 @@ function printData(dataObj) {
   printBranchDeletions(dataObj.branchDeletions);
   printPullRequests(dataObj.pullRequests, config.verboseMode);
   printIssues(dataObj.issues, config.verboseMode);
+  printPublicEvents(dataObj.publicEvents);
 }
 
 function printCommits(commits, verbose = false) {
@@ -130,6 +131,22 @@ function printIssues(issues, verbose = false) {
     }
 
     console.log(`|  |_ URL: ${issue.url}`);
+  }
+
+  console.log();
+}
+
+function printPublicEvents(publicEvents) {
+  if (!publicEvents.length) {
+    return;
+  }
+
+  console.log("=================");
+  console.log("| Public Events |");
+  console.log("=================");
+
+  for (const publicEvent of publicEvents) {
+    console.log(`|- Made ${publicEvent.repo} repository public`);
   }
 
   console.log();
