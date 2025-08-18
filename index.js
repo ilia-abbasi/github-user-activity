@@ -4,8 +4,8 @@ async function main() {
   const username = process.argv[2];
 
   try {
-    const dataJSON = await getUserData(username);
-    const dataObj = getDataSummary(dataJSON);
+    const dataObj = await getUserData(username);
+    const dataSummary = getDataSummary(dataObj);
   } catch (err) {
     console.log(`An error occurred while trying to get user data:\n${err}`);
     process.exit(1);
