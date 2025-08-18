@@ -6,6 +6,7 @@ function printData(dataObj) {
   printRepoCreations(dataObj.repoCreations);
   printBranchDeletions(dataObj.branchDeletions);
   printPullRequests(dataObj.pullRequests, config.verboseMode);
+  printIssues(dataObj.issues, config.verboseMode);
 }
 
 function printCommits(commits, verbose = false) {
@@ -98,13 +99,37 @@ function printPullRequests(pullRequests, verbose = false) {
 
   for (const pullRequest of pullRequests) {
     const verb = capitalizeFirstLetter(pullRequest.action);
-    console.log(`|- ${verb} a pull request at ${pullRequest.repo}`);
+    console.log(`|- ${verb} a pull request in ${pullRequest.repo}`);
 
     if (!verbose) {
       continue;
     }
 
     console.log(`|  |_ URL: ${pullRequest.url}`);
+    console.log("|");
+  }
+
+  console.log();
+}
+
+function printIssues(issues, verbose = false) {
+  if (!issues.length) {
+    return;
+  }
+
+  console.log("==========");
+  console.log("| Issues |");
+  console.log("==========");
+
+  for (const issue of issues) {
+    const verb = capitalizeFirstLetter(issue.action);
+    console.log(`|- ${verb} an issue in ${issue.repo}`);
+
+    if (!verbose) {
+      continue;
+    }
+
+    console.log(`|  |_ URL: ${issue.url}`);
   }
 
   console.log();
