@@ -45,6 +45,11 @@ function handleArgv() {
     config.saveLogMode = true;
     argv.splice(argv.indexOf("save"), 1);
   }
+
+  if (argv.length === 0) {
+    console.log("No username was given. Exitting with code 1.");
+    process.exit(1);
+  }
 }
 
 function showHelp() {
