@@ -24,7 +24,7 @@ async function getUserData(username) {
   }
 }
 
-function getDataSummary(dataObj) {
+function getDataSummary(dataObj, username) {
   const result = {
     commits: [],
     branchCreations: [],
@@ -35,6 +35,14 @@ function getDataSummary(dataObj) {
   };
 
   for (const event of dataObj) {
+    if (!config.id && event.actor.login === username) {
+      config.id = event.actor.id;
+    }
+
+    if (config.id !== event.actor.id) {
+      continue;
+    }
+
     if (event.type === "PushEvent") {
       extractCommits(event, result);
     }
@@ -56,6 +64,10 @@ function getDataSummary(dataObj) {
 
     if (event.type === "IssuesEvent") {
       extractIssues(event, result);
+    }
+
+    if (event.type === "PullRequestEvent") {
+      extractPullRequests(event, result);
     }
   }
 
@@ -98,6 +110,14 @@ function extractIssues(event, container) {
     repo: event.repo.name,
     action: event.payload.action,
     url: event.payload.issue.html_url,
+  });
+}
+
+function extractPullRequests(event, container) {
+  container.pullRequests.push({
+    repo: event.repo.name,
+    action: event.payload.action,
+    url: event.payload.pull_request.html_url,
   });
 }
 
