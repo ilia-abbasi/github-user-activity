@@ -80,14 +80,18 @@ function getDataSummary(dataObj, username) {
 }
 
 function extractCommits(event, container) {
+  const commitArray = [];
+
   for (const commit of event.payload.commits) {
-    container.commits.push({
+    commitArray.push({
       repo: event.repo.name,
       message: commit.message,
       hash: commit.sha,
     });
     config.emails.add(commit.author.email);
   }
+
+  container.commits.push(commitArray);
 }
 
 function extractBranchCreations(event, container) {
