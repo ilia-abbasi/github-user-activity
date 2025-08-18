@@ -8,6 +8,13 @@ async function getUserData(username) {
   try {
     const response = await fetch(url);
     const responseJSON = await response.json();
+
+    if (response.status > 399) {
+      throw new Error(
+        `Failed to retrieve data. Status code ${response.status}`
+      );
+    }
+
     return responseJSON;
   } catch (err) {
     console.log(`An error occurred while fetching data:\n${err}`);
@@ -15,6 +22,14 @@ async function getUserData(username) {
   }
 }
 
+function getDataSummary(data) {
+  const dataObj = JSON.parse(data);
+  const result = {};
+
+  return result;
+}
+
 module.exports = {
   getUserData,
+  getDataSummary,
 };
