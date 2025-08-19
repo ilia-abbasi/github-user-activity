@@ -1,6 +1,9 @@
 # github user activity
 **The project assignment for roadmap.sh**
 
+URL of the assignment in roadmap.sh:
+https://roadmap.sh/projects/github-user-activity
+
 This program uses github API to retrieve information about a user.
 
 The information consists of events, ID and emails. Events are actions that a user takes,
