@@ -13,6 +13,8 @@ ID is the unique number for each account on github. Emails are the emails connec
 each commit that has been pushed by that user, these include the emails of other people
 who have contributed to the user's repositories.
 
+Only events created within the past 30 days will be included and no more than 300 events will be shown.
+
 ## Installation
 
 1. Clone the repository:
