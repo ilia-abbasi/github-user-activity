@@ -10,7 +10,8 @@ The information consists of events, ID and emails. Events are actions that a use
 e.g. pushing commits, opening or closing issues, creating repositories etc. This
 program does not yet show all the events, but they will be added later.
 ID is the unique number for each account on github. Emails are the emails connected to
-each commit that has been made by that user.
+each commit that has been pushed by that user, these include the emails of other people
+who have contributed to the user's repositories.
 
 ## Installation
 
