@@ -1,7 +1,7 @@
 # github user activity
 **The project assignment for roadmap.sh**
 
-URL of the assignment in roadmap.sh:
+URL of the assignment in roadmap.sh:  
 https://roadmap.sh/projects/github-user-activity
 
 This program uses github API to retrieve information about a user.
@@ -51,7 +51,7 @@ You must have **Node.js** and **NPM** already installed.
 
 ## Dependencies
 
-There are no dependencies, but:
+There are no dependencies, but:  
 The source code is formatted with [Prettier](https://prettier.io/).
 
 ---
