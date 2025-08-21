@@ -1,8 +1,14 @@
 const config = require("./config.js");
+const githubUsernameRegex = /^[a-zA-Z\d](?:[a-zA-Z\d]|-(?=[a-zA-Z\d])){0,38}$/;
 
 async function getUserData(username) {
   if (username === undefined || username === "") {
     console.log("No username was provided");
+    process.exit(1);
+  }
+
+  if (!githubUsernameRegex.test(username)) {
+    console.log("Username is not valid");
     process.exit(1);
   }
 
