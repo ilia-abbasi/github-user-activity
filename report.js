@@ -14,6 +14,7 @@ function printData(dataObj) {
   printPullRequests(dataObj.pullRequests, config.verboseMode);
   printIssues(dataObj.issues, config.verboseMode);
   printPublicEvents(dataObj.publicEvents);
+  printStars(dataObj.stars);
 }
 
 function printPersonalInfo() {
@@ -166,6 +167,22 @@ function printPublicEvents(publicEvents) {
 
   for (const publicEvent of publicEvents) {
     log(`|- Made ${publicEvent.repo} repository public`);
+  }
+
+  log();
+}
+
+function printStars(stars) {
+  if (!stars.length) {
+    return;
+  }
+
+  log("=========");
+  log("| Stars |");
+  log("=========");
+
+  for (const star of stars) {
+    log(`|- Starred ${star.repo} repository`);
   }
 
   log();

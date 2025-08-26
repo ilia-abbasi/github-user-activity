@@ -40,6 +40,7 @@ function getDataSummary(dataObj, username) {
     pullRequests: [], // will include opening and closing the PR
     issues: [], // will include opening and closing the issue
     publicEvents: [], // making a repo public
+    stars: [], // not all the starred repos, but the action of starring a repo
   };
 
   for (const event of dataObj) {
@@ -80,6 +81,12 @@ function getDataSummary(dataObj, username) {
 
     if (event.type === "PublicEvent") {
       extractPublicEvents(event, result);
+    }
+
+    if (event.type === "WatchEvent") {
+      if (event.payload.action === "started") {
+        extractStars(event, result);
+      }
     }
   }
 
@@ -139,6 +146,12 @@ function extractIssues(event, container) {
 
 function extractPublicEvents(event, container) {
   container.publicEvents.push({
+    repo: event.repo.name,
+  });
+}
+
+function extractStars(event, container) {
+  container.stars.push({
     repo: event.repo.name,
   });
 }
