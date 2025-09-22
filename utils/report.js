@@ -42,8 +42,14 @@ function printCommits(commits, verbose = false) {
   log("| Commits |");
   log("===========");
 
+  let firstIteration = true;
+
   for (const commitGroup of commits) {
     const count = commitGroup.length;
+
+    if (!firstIteration) log("|");
+    firstIteration = false;
+
     log(
       `|- Pushed ${count} ${plural("commit", count)} to ${commitGroup[0].repo}`
     );
@@ -55,7 +61,6 @@ function printCommits(commits, verbose = false) {
     for (const commit of commitGroup) {
       log(`|  |_ ${commit.hash.slice(0, 7)}: ${commit.message}`);
     }
-    log("|");
   }
 
   log();
