@@ -1,6 +1,6 @@
-const { getUserData, getDataSummary } = require("./request.js");
-const { printData, saveLog } = require("./report.js");
-const config = require("./config.js");
+const { getUserData, getDataSummary } = require("./utils/request.js");
+const { printData, saveLog } = require("./utils/report.js");
+const config = require("./utils/config.js");
 const argv = process.argv;
 
 async function main() {
